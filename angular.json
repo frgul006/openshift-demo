@@ -1,0 +1,142 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "oc-sample-monorepo": {
+      "root": "apps/oc-sample-monorepo/",
+      "sourceRoot": "apps/oc-sample-monorepo/src",
+      "projectType": "application",
+      "prefix": "oc",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/oc-sample-monorepo",
+            "index": "apps/oc-sample-monorepo/src/index.html",
+            "main": "apps/oc-sample-monorepo/src/main.ts",
+            "polyfills": "apps/oc-sample-monorepo/src/polyfills.ts",
+            "tsConfig": "apps/oc-sample-monorepo/tsconfig.app.json",
+            "assets": [
+              "apps/oc-sample-monorepo/src/favicon.ico",
+              "apps/oc-sample-monorepo/src/assets"
+            ],
+            "styles": ["apps/oc-sample-monorepo/src/styles.scss"],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/oc-sample-monorepo/src/environments/environment.ts",
+                  "with": "apps/oc-sample-monorepo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "oc-sample-monorepo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "oc-sample-monorepo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "oc-sample-monorepo:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/oc-sample-monorepo/tsconfig.app.json",
+              "apps/oc-sample-monorepo/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/oc-sample-monorepo/jest.config.js",
+            "tsConfig": "apps/oc-sample-monorepo/tsconfig.spec.json",
+            "setupFile": "apps/oc-sample-monorepo/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "oc-sample-monorepo-e2e": {
+      "root": "apps/oc-sample-monorepo-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/oc-sample-monorepo-e2e/cypress.json",
+            "tsConfig": "apps/oc-sample-monorepo-e2e/tsconfig.e2e.json",
+            "devServerTarget": "oc-sample-monorepo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "oc-sample-monorepo:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/oc-sample-monorepo-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/schematics"
+  },
+  "schematics": {
+    "@nrwl/schematics:application": {
+      "style": "scss",
+      "framework": "angular"
+    },
+    "@nrwl/schematics:library": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "oc-sample-monorepo"
+}
